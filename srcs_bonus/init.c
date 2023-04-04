@@ -6,7 +6,7 @@
 /*   By: amery <amery@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:59:41 by amery             #+#    #+#             */
-/*   Updated: 2023/04/04 13:27:13 by amery            ###   ########.fr       */
+/*   Updated: 2023/04/04 13:38:37 by amery            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	init(int argc, char **argv, t_pipex *p, char **enpv)
 	p->c.cmds = malloc(sizeof(char *) * argc - 2);
 	p->c.path_cmd = malloc(sizeof(char *) * argc - 2);
 	if (!p->c.cmds || !p->c.path_cmd)
-		return (0);
+		return (1);
 	p->c.cmds[argc - 3] = NULL;
 	p->c.path_cmd[argc - 3] = NULL;
 	i = 1;
