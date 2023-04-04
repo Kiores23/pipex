@@ -6,7 +6,7 @@
 /*   By: amery <amery@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 15:56:16 by amery             #+#    #+#             */
-/*   Updated: 2023/03/25 16:43:13 by amery            ###   ########.fr       */
+/*   Updated: 2023/04/03 13:46:16 by amery            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s1);
 long	ft_atoi(const char *str);
-int     ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen(const char *str);
 int		ft_nbrlen(int nbr);
 int		ft_issorta(int *tab, int size, int place);
 int		ft_isnumber(char *s);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_issortrn(int *tab, int size, int n);
-int     ft_rerror(const char *derror);
+int		ft_rerror(const char *derror);
 int		ft_isdigit(char c);
 
 #endif

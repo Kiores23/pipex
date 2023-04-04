@@ -19,12 +19,10 @@ SRCS_DIR_BONUS = srcs_bonus
 SRCS_PATH_BONUS = ./$(SRCS_DIR_BONUS)/
 FILES =	main \
 		init \
-		parsing \
 		exit \
 		pipe_master
 FILES_BONUS =	main \
 				init \
-				parsing \
 				exit \
 				pipe_master
 SRCS = $(addprefix $(SRCS_PATH), $(addsuffix .c, $(FILES)))

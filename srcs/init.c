@@ -6,15 +6,12 @@
 /*   By: amery <amery@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:59:41 by amery             #+#    #+#             */
-/*   Updated: 2023/03/27 19:27:05 by amery            ###   ########.fr       */
+/*   Updated: 2023/04/03 15:02:16 by amery            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #define _POSIX_SOURCE
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 char	**initcmd(char *str)
 {
@@ -37,13 +34,13 @@ char	*get_bin_path(char **enpv, char *cmd)
 	int		i;
 
 	i = -1;
-	while(enpv[++i] && ft_strncmp(enpv[i], "PATH=", 5))
+	while (enpv[++i] && ft_strncmp(enpv[i], "PATH=", 5))
 		;
 	tmp = ft_split(enpv[i] + 5, ':');
 	if (!tmp)
-		return(NULL);
+		return (NULL);
 	i = -1;
-	while(tmp[++i])
+	while (tmp[++i])
 	{
 		tmp[i] = ft_strjoin(tmp[i], "/");
 		tmp[i] = ft_strjoin(tmp[i], cmd);
@@ -51,12 +48,10 @@ char	*get_bin_path(char **enpv, char *cmd)
 			break ;
 	}
 	if (!tmp[i])
-		return (NULL);
-	path = ft_strdup(tmp[i]);
-	i = -1;
-	while (tmp[++i])
-		free(tmp[i]);
-	free(tmp);
+		path = NULL;
+	else
+		path = ft_strdup(tmp[i]);
+	freetab(tmp);
 	return (path);
 }
 
@@ -73,14 +68,11 @@ int	init(int argc, char **argv, t_pipex *p, char **enpv)
 	p->c.path_cmd[1] = get_bin_path(enpv, *p->c.cmds[1]);
 	p->f.src_fd = -1;
 	p->f.dst_fd = -1;
-	if (!p->f.src || !p->f.dst || !p->c.cmds[0] || !p->c.cmds[1]
-		|| !p->c.path_cmd[0] || !p->c.path_cmd[1])
-		return (0);
 	p->f.src_fd = open(p->f.src, O_RDONLY, 0644);
 	if (p->f.src_fd == -1)
-		return (0);
+		return (1);
 	p->f.dst_fd = open(p->f.dst, O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if (p->f.dst_fd == -1)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }

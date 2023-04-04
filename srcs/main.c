@@ -6,7 +6,7 @@
 /*   By: amery <amery@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 15:09:49 by amery             #+#    #+#             */
-/*   Updated: 2023/03/28 19:18:42 by amery            ###   ########.fr       */
+/*   Updated: 2023/04/03 15:14:18 by amery            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,18 @@
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipex	p;
-	int		i;
+	int		r;
 
 	if (argc == 1)
 		return (1);
 	if (argc != 5)
 		return (exit_pipex(NULL, 1, "Error"));
-	if (!init(argc, argv, &p, envp) || !parsing(p))
-		return (exit_pipex(&p, 2, "Error"));
-	if(pipe_master(&p, envp))
-		return (exit_pipex(&p, 3, "Error pipe"));
-	i = 2;
-	while (--i >= 0)
-	{
-		printf("%i\n", p.id[i]);
-		waitpid(p.id[i], NULL, WUNTRACED);
-	}
+	r = init(argc, argv, &p, envp);
+	if (r)
+		return (exit_pipex(&p, r, "Error"));
+	if (pipe_master(&p, envp))
+		return (exit_pipex(&p, 3, NULL));
+	while (wait(NULL) >= 0)
+		;
 	return (exit_pipex(&p, 0, NULL));
 }
