@@ -6,7 +6,7 @@
 /*   By: amery <amery@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:59:41 by amery             #+#    #+#             */
-/*   Updated: 2023/04/04 13:38:37 by amery            ###   ########.fr       */
+/*   Updated: 2023/04/20 17:14:44 by amery            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,31 @@ char	*get_bin_path(char **enpv, char *cmd)
 	return (path);
 }
 
+int	init_heredoc(t_pipex *p)
+{
+	char	*heredoc;
+	char	*line;
+	int		fd[2];
+
+	heredoc = ft_strdup("");
+	while (1)
+	{
+		line = get_next_line(0);
+		if (!line || !ft_strcmp(line, "here_doc\n"))
+			break ;
+		heredoc = ft_strjoin(heredoc, line);
+		free(line);
+	}
+	pipe(fd);
+	ft_putstr_fd(heredoc, fd[1]);
+	close(fd[1]);
+	p->f.src_fd = fd[0];
+	p->f.dst_fd = open(p->f.dst, O_APPEND | O_CREAT | O_WRONLY, 0644);
+	if (!p->f.src || !p->f.dst || p->f.src_fd == -1 || p->f.dst_fd == -1)
+		return (1);
+	return (0);
+}
+
 int	init(int argc, char **argv, t_pipex *p, char **enpv)
 {
 	int	i;
@@ -88,6 +113,8 @@ int	init(int argc, char **argv, t_pipex *p, char **enpv)
 		p->c.cmds[i - 2] = initcmd(argv[i]);
 		p->c.path_cmd[i - 2] = get_bin_path(enpv, *p->c.cmds[i - 2]);
 	}
+	if (!ft_strcmp(p->f.src, "here_doc"))
+		return (init_heredoc(p));
 	p->f.src_fd = open(p->f.src, O_RDONLY, 0644);
 	p->f.dst_fd = open(p->f.dst, O_TRUNC | O_CREAT | O_WRONLY, 0644);
 	if (!p->f.src || !p->f.dst || p->f.src_fd == -1 || p->f.dst_fd == -1)
